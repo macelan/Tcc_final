@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio-sentenciado-ativos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7158e9d0-3ede-4d6b-875a-45fdd14781f4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<queryString language="EJBQL">
+		<![CDATA[Select c FROM Sentenciado c WHERE c.ativo="0"  ORDER BY	c.matricula]]>
+	</queryString>
+	<field name="ativo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[ativo]]></fieldDescription>
+	</field>
+	<field name="aliases" class="java.lang.String">
+		<fieldDescription><![CDATA[aliases]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[matricula]]></fieldDescription>
+	</field>
+	<field name="faccao" class="br.edu.ifsp.tcc.modelo.Faccao">
+		<fieldDescription><![CDATA[faccao]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="25" uuid="a87af369-1eca-41a6-ae7b-9a59cb24d4de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema de Controle de Movimentação de Sentenciado]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="83" y="6" width="136" height="15" uuid="daec8b06-dc10-46b8-a90c-318f1b404ac5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Sentenciado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="80" height="15" uuid="4608699e-3787-41c1-b58b-ce99aa978b34"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="32" width="280" height="17" uuid="62f0cf84-473d-442e-afee-1f0318eaedaa"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="30" width="100" height="18" uuid="88b4582b-29fc-46e1-8e24-35a2fa08a80e"/>
+				<textElement textAlignment="Left">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apelido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="30" width="92" height="19" uuid="af4984eb-63d3-4daf-a69f-01c68886b071"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facção]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="402" y="0" width="153" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="06f7392b-4f72-48f1-89a2-9af88ea76c43"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Impresso em: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format( new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="4" width="80" height="18" uuid="da70719c-0b02-4cf9-949c-283d94c67f44"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="2" width="280" height="20" uuid="bafa754a-be92-4c4f-b62d-2bf217866195"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="4" width="92" height="16" uuid="4c0d4968-e715-41a0-8589-b5c030dccb75"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{faccao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="100" height="20" uuid="175f08d4-f637-4616-b1a3-dfa74510441e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{aliases}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="128" y="-2" width="299" height="17" uuid="880a5e9b-d6b3-4e8f-85f9-e48317116584"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Pagina  " + $V{PAGE_NUMBER}  + "  de  "  + $V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="2" width="118" height="17" uuid="c55c33fa-5500-4d90-86da-b91c673f23da"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Quantidade de Registro: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="128" y="2" width="92" height="19" uuid="5c68c43e-9c67-4cbb-8e37-af57bab03fd0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

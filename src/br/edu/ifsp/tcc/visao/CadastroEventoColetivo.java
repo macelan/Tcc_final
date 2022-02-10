@@ -1,0 +1,541 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.edu.ifsp.tcc.visao;
+
+import br.edu.ifsp.tcc.controle.ControleEventoColetivo;
+import br.edu.ifsp.tcc.controle.ControlePavilhao;
+import br.edu.ifsp.tcc.modelo.EventoColetivo;
+import br.edu.ifsp.tcc.modelo.Pavilhao;
+import java.awt.Font;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
+/**
+ *
+ * @author macel
+ */
+public class CadastroEventoColetivo extends javax.swing.JDialog {
+
+    private ControleEventoColetivo controle = new ControleEventoColetivo();
+    private ControlePavilhao controlePavilhao = new ControlePavilhao();
+    
+    private List<EventoColetivo> listEventoColetivos = new ArrayList();
+    private List<Pavilhao> listPavilhao = new ArrayList();
+    
+    EventoColetivo f = new EventoColetivo();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yyyy"); // o mes tem que ser maiusculo
+    DateFormat dfh = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // o mes tem que ser maiusculo
+    
+ /**
+     * Creates new form FormUsuario
+     */
+    public CadastroEventoColetivo(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        carregarLista();
+        atualizaTabela();
+        TamanhoColuna();
+        trataEdicao(false);
+        for (Pavilhao p : listPavilhao) {
+        jComboBoxSiglaPavilhao.addItem(p.getSigla());
+        }
+    }
+    
+     private void trataEdicao(boolean editando) {
+        btnCancelar.setEnabled(editando);
+        btnSalvar.setEnabled(editando);
+        btnExcluir.setEnabled(!editando);
+        btnNovo.setEnabled(!editando);
+        jDateChooserDataEventoColetivo.setEnabled(editando);
+        txtRelato.setEditable(editando);
+       // txtLocalizarEventoColetivo.setEditable(editando);
+        jTableEventosColetivo.setEnabled(!editando);
+
+    }
+    
+       public void TamanhoColuna() {
+        jTableEventosColetivo.getColumnModel().getColumn(0).setMaxWidth(150);
+        jTableEventosColetivo.getColumnModel().getColumn(1).setMaxWidth(100);
+        jTableEventosColetivo.getColumnModel().getColumn(2).setMaxWidth(150);
+        jTableEventosColetivo.getColumnModel().getColumn(3).setMaxWidth(700);
+        jTableEventosColetivo.setAutoCreateRowSorter(true); // ordena ao clicar na coluna
+        JTableHeader jth = jTableEventosColetivo.getTableHeader();
+        jth.setFont(new Font("Arial Unicod MS", Font.BOLD, 14));
+        
+    }
+     
+     
+    public void atualizaTabela() {
+        DefaultTableModel dtm = (DefaultTableModel) jTableEventosColetivo.getModel();
+        dtm.setNumRows(0);//apagando todas as linhas
+        for (EventoColetivo f : listEventoColetivos) {
+            dtm.addRow(new Object[]
+            {f.getPavilhao().getNome(), df.format(f.getDataRegistro()),dfh.format(f.getDataOcorrido()),f.getRelato()});
+        }
+    }
+
+    public void carregarLista() {
+    listEventoColetivos = controle.buscar();
+    listPavilhao = controlePavilhao.buscar();
+    }
+
+    public void limparCampos() {
+        jDateChooserDataEventoColetivo.setDate(null);
+        jComboBoxSiglaPavilhao.setSelectedIndex(0);
+        txtLocalizarEventoColetivo.setText("");
+        txtRelato.setText("");
+
+    }
+
+
+    public void pesquisar() {
+    listEventoColetivos.clear();//limpa lista
+        DefaultTableModel dtm = (DefaultTableModel) jTableEventosColetivo.getModel();
+        dtm.setNumRows(0);//LIMPA A TABELA
+        String str = "";
+        str = txtLocalizarEventoColetivo.getText();
+        if (jcbPesquisarEventoColetivo.getSelectedItem().toString().equals("Nome")) {
+            listEventoColetivos.addAll(controle.listarNome(str));//ATUALIZA A LISTA COM OS DADOS DESTA PESQUISA RELEASE
+        }
+        if (jcbPesquisarEventoColetivo.getSelectedItem().toString().equals("Relato")) {
+            listEventoColetivos.addAll(controle.listarRelato(str));//ATUALIZA A LISTA COM OS DADOS DESTA PESQUISA RELEASE
+        }
+        txtLocalizarEventoColetivo.requestFocus();
+        atualizaTabela();//PREENCHE COM OS NOVOS DADOS
+    }
+
+     public void vincularCampos() {
+        EventoColetivo f = listEventoColetivos.get(jTableEventosColetivo.getSelectedRow());// pega a linha da tabela
+        jDateChooserDataEventoColetivo.setDate(f.getDataOcorrido());
+        txtRelato.setText(f.getRelato());
+        jComboBoxSiglaPavilhao.setSelectedItem(f.getPavilhao().getSigla());
+    }
+    
+ 
+   
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        PersistenciaPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("PersistenciaPU").createEntityManager();
+        pavilhaoQuery = java.beans.Beans.isDesignTime() ? null : PersistenciaPUEntityManager.createQuery("SELECT p FROM Pavilhao p");
+        pavilhaoList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : pavilhaoQuery.getResultList();
+        jPanelTabela = new javax.swing.JPanel();
+        painelTabela = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableEventosColetivo = new javax.swing.JTable();
+        txtLocalizarEventoColetivo = new javax.swing.JTextField();
+        jcbPesquisarEventoColetivo = new javax.swing.JComboBox<>();
+        painelCadasto = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jDateChooserDataEventoColetivo = new com.toedter.calendar.JDateChooser();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBoxSiglaPavilhao = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtRelato = new javax.swing.JTextArea();
+        painelAcoes = new javax.swing.JPanel();
+        btnNovo = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro de Eventos Coletivos");
+
+        painelTabela.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisar  Eventos Coletivos por:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        painelTabela.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTableEventosColetivo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome Pavilhão", "Data do Cadastro", "Data Ocorrido", "Relato"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableEventosColetivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEventosColetivoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableEventosColetivo);
+
+        painelTabela.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 71, 1040, 180));
+
+        txtLocalizarEventoColetivo.setFont(txtLocalizarEventoColetivo.getFont().deriveFont(txtLocalizarEventoColetivo.getFont().getSize()+3f));
+        txtLocalizarEventoColetivo.setEnabled(false);
+        txtLocalizarEventoColetivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLocalizarEventoColetivoActionPerformed(evt);
+            }
+        });
+        txtLocalizarEventoColetivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLocalizarEventoColetivoKeyReleased(evt);
+            }
+        });
+        painelTabela.add(txtLocalizarEventoColetivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 36, 850, -1));
+
+        jcbPesquisarEventoColetivo.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        jcbPesquisarEventoColetivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Relato" }));
+        jcbPesquisarEventoColetivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbPesquisarEventoColetivoActionPerformed(evt);
+            }
+        });
+        painelTabela.add(jcbPesquisarEventoColetivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 35, 168, -1));
+
+        javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
+        jPanelTabela.setLayout(jPanelTabelaLayout);
+        jPanelTabelaLayout.setHorizontalGroup(
+            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(painelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 1060, Short.MAX_VALUE)
+        );
+        jPanelTabelaLayout.setVerticalGroup(
+            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTabelaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(painelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanelTabela, java.awt.BorderLayout.CENTER);
+
+        painelCadasto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastrar Evento Coletivo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        jLabel10.setText("Data  do Ocorrido:");
+
+        jLabel11.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        jLabel11.setText("Sigla Pavilhao:");
+
+        jComboBoxSiglaPavilhao.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        jComboBoxSiglaPavilhao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecionar" }));
+        jComboBoxSiglaPavilhao.setToolTipText("");
+        jComboBoxSiglaPavilhao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxSiglaPavilhaoActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        jLabel13.setText("Relato:");
+
+        txtRelato.setColumns(20);
+        txtRelato.setRows(5);
+        txtRelato.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtRelatoMouseClicked(evt);
+            }
+        });
+        txtRelato.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtRelatoKeyPressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(txtRelato);
+
+        javax.swing.GroupLayout painelCadastoLayout = new javax.swing.GroupLayout(painelCadasto);
+        painelCadasto.setLayout(painelCadastoLayout);
+        painelCadastoLayout.setHorizontalGroup(
+            painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelCadastoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelCadastoLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooserDataEventoColetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxSiglaPavilhao, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(painelCadastoLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1021, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
+        );
+        painelCadastoLayout.setVerticalGroup(
+            painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelCadastoLayout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addGroup(painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jDateChooserDataEventoColetivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(painelCadastoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jComboBoxSiglaPavilhao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel10))
+                .addGap(9, 9, 9)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(painelCadasto, java.awt.BorderLayout.NORTH);
+
+        painelAcoes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+
+        btnNovo.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/adicionar.png"))); // NOI18N
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Cancelar.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnSalvar.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/salvar.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setFont(new java.awt.Font("Arial Unicode MS", 1, 14)); // NOI18N
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deletar.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout painelAcoesLayout = new javax.swing.GroupLayout(painelAcoes);
+        painelAcoes.setLayout(painelAcoesLayout);
+        painelAcoesLayout.setHorizontalGroup(
+            painelAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelAcoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        painelAcoesLayout.setVerticalGroup(
+            painelAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnNovo)
+                .addComponent(btnCancelar)
+                .addComponent(btnSalvar)
+                .addComponent(btnExcluir))
+        );
+
+        getContentPane().add(painelAcoes, java.awt.BorderLayout.PAGE_END);
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        f = new EventoColetivo();
+        trataEdicao(true);
+        limparCampos();
+        jDateChooserDataEventoColetivo.requestFocus();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        trataEdicao(false);
+        limparCampos();
+        carregarLista();
+        atualizaTabela();
+        limparCampos();
+        txtLocalizarEventoColetivo.setEnabled(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+ if (jDateChooserDataEventoColetivo.getDate() != null) {
+             if (jComboBoxSiglaPavilhao.getSelectedIndex() != 0) {
+                if (!txtRelato.getText().isEmpty()) {
+                    f.setDataOcorrido(jDateChooserDataEventoColetivo.getDate());
+                    f.setDataRegistro(new Date());
+                    f.setPavilhao(listPavilhao.get(jComboBoxSiglaPavilhao.getSelectedIndex() - 1));
+                    f.setRelato(txtRelato.getText().trim());
+                    controle.alterar(f);//salvar o orçamento
+                    carregarLista();
+                    atualizaTabela();
+                    limparCampos();
+                    trataEdicao(false);
+                 } else {
+                    JOptionPane.showMessageDialog(null, "Relate o Ocorrido!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                    txtRelato.requestFocus();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione o Pavilhão que ocorreu o evento!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                jComboBoxSiglaPavilhao.requestFocus();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione a data do Evento!", "Alerta", JOptionPane.WARNING_MESSAGE);
+            jDateChooserDataEventoColetivo.requestFocus();
+        }
+
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+       if (jTableEventosColetivo.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha da tabela para excluir", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (JOptionPane.showConfirmDialog(null, "Confirma exclusão?",
+                "Exclusão de Evento Coletivo Pavilhão", JOptionPane.YES_NO_OPTION)
+            == JOptionPane.YES_OPTION) {
+            EventoColetivo f = listEventoColetivos.get(jTableEventosColetivo.getSelectedRow());
+            controle.remover(f);
+            }
+        }
+        carregarLista();
+        atualizaTabela();
+        limparCampos();
+
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtLocalizarEventoColetivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocalizarEventoColetivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocalizarEventoColetivoActionPerformed
+
+    private void txtRelatoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtRelatoMouseClicked
+        // TODO add your handling code here:
+        vincularCampos();
+    }//GEN-LAST:event_txtRelatoMouseClicked
+
+    private void txtLocalizarEventoColetivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLocalizarEventoColetivoKeyReleased
+        // TODO add your handling code here:
+        pesquisar();
+    }//GEN-LAST:event_txtLocalizarEventoColetivoKeyReleased
+
+    private void jTableEventosColetivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEventosColetivoMouseClicked
+        // TODO add your handling code here:
+    vincularCampos();
+    jDateChooserDataEventoColetivo.requestFocus();
+
+    }//GEN-LAST:event_jTableEventosColetivoMouseClicked
+
+    private void jcbPesquisarEventoColetivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbPesquisarEventoColetivoActionPerformed
+        // TODO add your handling code here:
+        txtLocalizarEventoColetivo.setEnabled(true);
+        txtLocalizarEventoColetivo.requestFocus();
+    }//GEN-LAST:event_jcbPesquisarEventoColetivoActionPerformed
+
+    private void jComboBoxSiglaPavilhaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSiglaPavilhaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxSiglaPavilhaoActionPerformed
+
+    private void txtRelatoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRelatoKeyPressed
+        // Navega atraves de Enter
+        if(evt.getKeyCode() == evt.VK_ENTER){
+        jcbPesquisarEventoColetivo.requestFocus();
+        }
+        
+    }//GEN-LAST:event_txtRelatoKeyPressed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CadastroEventoColetivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CadastroEventoColetivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CadastroEventoColetivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CadastroEventoColetivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                CadastroEventoColetivo dialog = new CadastroEventoColetivo(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.persistence.EntityManager PersistenciaPUEntityManager;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> jComboBoxSiglaPavilhao;
+    private com.toedter.calendar.JDateChooser jDateChooserDataEventoColetivo;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JPanel jPanelTabela;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTableEventosColetivo;
+    private javax.swing.JComboBox<String> jcbPesquisarEventoColetivo;
+    private javax.swing.JPanel painelAcoes;
+    private javax.swing.JPanel painelCadasto;
+    private javax.swing.JPanel painelTabela;
+    private java.util.List<br.edu.ifsp.tcc.modelo.Pavilhao> pavilhaoList;
+    private javax.persistence.Query pavilhaoQuery;
+    private javax.swing.JTextField txtLocalizarEventoColetivo;
+    private javax.swing.JTextArea txtRelato;
+    // End of variables declaration//GEN-END:variables
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio-sent-mov-intBlank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="be18a1d5-8f47-4dda-88f8-c96c2575598b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<queryString language="EJBQL">
+		<![CDATA[Select c FROM Sentenciado c WHERE c.ativo="1" order by c.matricula]]>
+	</queryString>
+	<field name="sindicancias" class="java.util.List">
+		<fieldDescription><![CDATA[sindicancias]]></fieldDescription>
+	</field>
+	<field name="ativo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[ativo]]></fieldDescription>
+	</field>
+	<field name="aliases" class="java.lang.String">
+		<fieldDescription><![CDATA[aliases]]></fieldDescription>
+	</field>
+	<field name="quantidadeObservacao" class="java.lang.Integer">
+		<fieldDescription><![CDATA[quantidadeObservacao]]></fieldDescription>
+	</field>
+	<field name="movimentacoesExternas" class="java.util.List">
+		<fieldDescription><![CDATA[movimentacoesExternas]]></fieldDescription>
+	</field>
+	<field name="movimentacoesInternas" class="java.util.List">
+		<fieldDescription><![CDATA[movimentacoesInternas]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="quantidadeSindicancia" class="java.lang.Integer">
+		<fieldDescription><![CDATA[quantidadeSindicancia]]></fieldDescription>
+	</field>
+	<field name="observacoes" class="java.util.List">
+		<fieldDescription><![CDATA[observacoes]]></fieldDescription>
+	</field>
+	<field name="rg" class="java.lang.String">
+		<fieldDescription><![CDATA[rg]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[matricula]]></fieldDescription>
+	</field>
+	<field name="faccao" class="br.edu.ifsp.tcc.modelo.Faccao">
+		<fieldDescription><![CDATA[faccao]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="dataNascimento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataNascimento]]></fieldDescription>
+	</field>
+	<field name="dataCadastro" class="java.util.Date">
+		<fieldDescription><![CDATA[dataCadastro]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="0" width="484" height="25" uuid="0c4af176-eb60-44da-9bae-9f5298c65260"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema de Controle de Movimentação de Sentenciado]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="10" width="307" height="28" uuid="7e95bd66-5fe8-4ed2-8716-0f12b1a8b28e"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Movimentações Internas]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="398" y="20" width="153" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="70da5021-ecc3-4bbf-bbb4-2cc3939e34a1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Impresso em: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format( new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="e2a4335f-fcf2-41ff-9291-7ca41c24e015">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b0e5727-4cd6-4e27-ab2b-08eb6f75234c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="80" height="30" uuid="377a7959-f49d-4935-81be-f69ced05cf2e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1876f846-1f75-4eec-8c0b-e916f8adbd32"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="103" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="ad30d9e1-dacf-4527-80b3-1cedf4b1c1e0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b0e5727-4cd6-4e27-ab2b-08eb6f75234c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="380" height="30" uuid="5bd47903-8d4b-4935-8899-86eeaf628fca">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1876f846-1f75-4eec-8c0b-e916f8adbd32"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="30" width="551" height="69" uuid="5bc281f9-21c1-46b8-818c-e3dafba1e15a"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{movimentacoesInternas})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["sub-relatorio-sent-mov.int.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="152" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
